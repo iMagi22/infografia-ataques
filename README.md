@@ -1,1 +1,677 @@
-# infografia-ataques
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 2 - Ataques, Conceptos y Técnicas</title>
+<style>
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+:root {
+  --bg:    #030B1A;
+  --bg2:   #061428;
+  --bg3:   #0A1E38;
+  --blue:  #00C8FF;
+  --blue2: #0077B6;
+  --cyan:  #48CAE4;
+  --green: #00FF9F;
+  --red:   #FF3A5C;
+  --orange:#F4A261;
+  --yellow:#FFD60A;
+  --white: #E8F4FF;
+  --gray:  #5A7A9A;
+  --purple:#A855F7;
+}
+
+body {
+  width: 794px;
+  background-color: #030B1A;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #E8F4FF;
+  position: relative;
+}
+
+/* ===== CIRCUIT BACKGROUND CANVAS ===== */
+.circuit-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 794px; height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #030B1A;
+}
+
+/* Circuit lines SVG pattern */
+.circuit-bg svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.18;
+}
+
+.page {
+  width: 794px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background-color: #061428;
+  background-image: linear-gradient(135deg, #030d22 0%, #041830 40%, #061428 100%);
+  border-bottom: 3px solid #00C8FF;
+  padding: 22px 36px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,200,255,0.12) 0%, transparent 70%);
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: 100px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,119,182,0.10) 0%, transparent 70%);
+}
+
+.header-tag {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  color: #00C8FF;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
+
+.header h1 {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 2px;
+  color: #E8F4FF;
+  text-shadow: 0 0 20px rgba(0,200,255,0.4);
+}
+.header h1 span { color: #00C8FF; }
+
+.header-sub {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: #5A7A9A;
+  margin-top: 7px;
+  letter-spacing: 1px;
+}
+
+.header-right {
+  position: absolute;
+  right: 36px; top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.header-shield {
+  font-size: 48px;
+  line-height: 1;
+  display: block;
+}
+
+.header-badge-txt {
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  color: #00C8FF;
+  letter-spacing: 2px;
+  display: block;
+  margin-top: 3px;
+  text-shadow: 0 0 8px #00C8FF;
+}
+
+/* ===== ALERT BAR ===== */
+.alert-bar {
+  background-color: #FF3A5C;
+  background-image: linear-gradient(90deg, #c9002e, #FF3A5C, #c9002e);
+  padding: 9px 36px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.alert-bar span { color: white; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; }
+.alert-mono { font-family: 'Courier New', monospace; font-size: 9px; color: rgba(255,255,255,0.7); margin-left: auto; letter-spacing: 2px; }
+
+/* ===== CONTENT ===== */
+.content { padding: 20px 36px; }
+
+/* ===== DEFINITION BOX ===== */
+.def-box {
+  background-color: #061428;
+  background-image: linear-gradient(135deg, #061428, #0A1E38);
+  border: 1px solid rgba(0,200,255,0.25);
+  border-left: 4px solid #00C8FF;
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+.def-label { font-family: 'Courier New', monospace; font-size: 8px; color: #00C8FF; letter-spacing: 3px; margin-bottom: 6px; }
+.def-title { font-family: Impact, sans-serif; font-size: 19px; font-weight: 900; color: #00C8FF; margin-bottom: 5px; letter-spacing: 1px; }
+.def-text { font-size: 11px; color: #ACC5DC; line-height: 1.6; }
+
+/* ===== SECTION TITLE ===== */
+.sec-title {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, currentColor, transparent); opacity: 0.4; }
+
+/* ===== ATTACKS GRID ===== */
+.attacks-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 18px; }
+
+.atk-card {
+  background-color: #0A1E38;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: 3px solid;
+  border-radius: 4px;
+  padding: 12px 10px;
+}
+.atk-card.c1 { border-top-color: #FF3A5C; }
+.atk-card.c2 { border-top-color: #F4A261; }
+.atk-card.c3 { border-top-color: #FFD60A; }
+.atk-card.c4 { border-top-color: #00C8FF; }
+.atk-card.c5 { border-top-color: #00FF9F; }
+.atk-card.c6 { border-top-color: #A855F7; }
+
+.atk-icon { font-size: 20px; margin-bottom: 5px; }
+.atk-title { font-family: Impact, sans-serif; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 5px; }
+.atk-card.c1 .atk-title { color: #FF3A5C; }
+.atk-card.c2 .atk-title { color: #F4A261; }
+.atk-card.c3 .atk-title { color: #FFD60A; }
+.atk-card.c4 .atk-title { color: #00C8FF; }
+.atk-card.c5 .atk-title { color: #00FF9F; }
+.atk-card.c6 .atk-title { color: #A855F7; }
+.atk-desc { font-size: 9.5px; color: #6A8AAA; line-height: 1.45; }
+
+/* ===== KILL CHAIN ===== */
+.kc-wrap { margin-bottom: 18px; }
+.kc-flow { display: flex; align-items: stretch; }
+.kc-step {
+  flex: 1;
+  background-color: #0A1E38;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 9px 5px;
+  text-align: center;
+  position: relative;
+}
+.kc-step::after { content: '▶'; position: absolute; right: -7px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #5A7A9A; z-index: 2; background-color: #030B1A; padding: 2px 0; }
+.kc-step:last-child::after { display: none; }
+.kc-num { font-family: 'Courier New', monospace; font-size: 7px; color: #5A7A9A; display: block; margin-bottom: 3px; }
+.kc-icon { font-size: 15px; display: block; margin-bottom: 2px; }
+.kc-name { font-family: Impact, sans-serif; font-size: 9px; color: #FFD60A; display: block; margin-bottom: 2px; letter-spacing: 0.3px; }
+.kc-desc { font-size: 7.5px; color: #5A7A9A; }
+
+/* ===== TWO COLUMNS ===== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+
+/* ===== MALWARE TABLE ===== */
+.mal-table { background-color: #0A1E38; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.mal-head { display: grid; grid-template-columns: 1fr 1.4fr; background-color: rgba(255,58,92,0.15); padding: 7px 10px; border-bottom: 1px solid rgba(255,58,92,0.3); }
+.mal-h { font-family: 'Courier New', monospace; font-size: 8px; color: #FF3A5C; letter-spacing: 1px; }
+.mal-row { display: grid; grid-template-columns: 1fr 1.4fr; padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: center; }
+.mal-row:last-child { border-bottom: none; }
+.mal-name { font-family: Impact, sans-serif; font-size: 11px; color: #E8F4FF; display: flex; align-items: center; gap: 5px; }
+.mal-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.mal-desc { font-size: 9px; color: #6A8AAA; line-height: 1.4; }
+
+/* ===== SOCIAL ENG ===== */
+.se-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.se-item { background-color: #0A1E38; border: 1px solid rgba(255,255,255,0.06); border-left: 3px solid #F4A261; border-radius: 3px; padding: 9px; }
+.se-title { font-family: Impact, sans-serif; font-size: 11px; color: #F4A261; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
+.se-desc { font-size: 8.5px; color: #6A8AAA; line-height: 1.4; }
+
+/* ===== PHISHING ANATOMY ===== */
+.phish-wrap { background-color: #0A1E38; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 18px; }
+.phish-titlebar { background-color: rgba(255,58,92,0.15); border-bottom: 1px solid rgba(255,58,92,0.3); padding: 7px 12px; display: flex; align-items: center; gap: 5px; font-family: 'Courier New', monospace; font-size: 9px; color: #FF3A5C; }
+.ph-dot { width: 7px; height: 7px; border-radius: 50%; }
+.phish-body { padding: 12px; }
+.ph-field { display: grid; grid-template-columns: 50px 1fr; margin-bottom: 3px; font-size: 9.5px; }
+.ph-lbl { font-family: 'Courier New', monospace; color: #5A7A9A; }
+.ph-val { color: #E8F4FF; }
+.ph-val.bad { color: #FF3A5C; }
+.ph-div { height: 1px; background-color: rgba(255,255,255,0.06); margin: 8px 0; }
+.ph-text { font-size: 9.5px; color: #ACC5DC; line-height: 1.55; margin-bottom: 6px; }
+.ph-link { font-family: 'Courier New', monospace; font-size: 8.5px; color: #00C8FF; display: block; margin-bottom: 7px; }
+.ph-btn { background-color: #FF3A5C; color: white; padding: 5px 14px; font-family: Impact, sans-serif; font-size: 11px; display: inline-block; border-radius: 2px; letter-spacing: 1px; }
+.phish-warns { padding: 9px 12px; background-color: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); }
+.warn-item { font-size: 8.5px; color: #F4A261; margin-bottom: 2px; display: flex; gap: 5px; }
+.warn-item::before { content: '⚠'; flex-shrink: 0; }
+
+/* ===== RISK BARS ===== */
+.risk-wrap { background-color: #0A1E38; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 12px; margin-bottom: 18px; }
+.risk-row { display: flex; align-items: center; margin-bottom: 9px; gap: 10px; }
+.risk-row:last-child { margin-bottom: 0; }
+.risk-lbl { font-family: Impact, sans-serif; font-size: 11px; color: #E8F4FF; width: 115px; flex-shrink: 0; letter-spacing: 0.3px; }
+.risk-bg { flex: 1; height: 8px; background-color: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.risk-fill { height: 100%; border-radius: 4px; }
+.risk-pct { font-family: 'Courier New', monospace; font-size: 9px; width: 34px; text-align: right; flex-shrink: 0; }
+
+/* ===== MITIGATION ===== */
+.mit-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 9px; margin-bottom: 18px; }
+.mit-card { background-color: #0A1E38; border: 1px solid rgba(0,255,159,0.2); border-radius: 4px; padding: 12px 8px; text-align: center; }
+.mit-icon { font-size: 22px; margin-bottom: 6px; }
+.mit-title { font-family: Impact, sans-serif; font-size: 11px; color: #00FF9F; margin-bottom: 5px; letter-spacing: 0.5px; }
+.mit-desc { font-size: 8.5px; color: #6A8AAA; line-height: 1.4; }
+
+/* ===== REFERENCES ===== */
+.references-section {
+  margin: 0 36px 16px;
+  background-color: #061428;
+  border: 1px solid rgba(0,200,255,0.15);
+  border-left: 4px solid #00C8FF;
+  border-radius: 4px;
+  padding: 12px 16px;
+}
+.ref-title {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 13px;
+  color: #00C8FF;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.ref-list { display: flex; flex-direction: column; gap: 5px; }
+.ref-item {
+  font-size: 9px;
+  color: #7A9ABB;
+  line-height: 1.5;
+  padding-left: 14px;
+  text-indent: -14px;
+}
+.ref-item em { color: #ACC5DC; font-style: italic; }
+
+/* ===== BINARY DECORATION STRIPS ===== */
+.bin-strip {
+  font-family: 'Courier New', monospace;
+  font-size: 7px;
+  color: rgba(0,200,255,0.12);
+  padding: 4px 36px;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 2px;
+  background-color: rgba(0,20,50,0.5);
+  border-top: 1px solid rgba(0,200,255,0.06);
+  border-bottom: 1px solid rgba(0,200,255,0.06);
+  user-select: none;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background-color: #041020;
+  border-top: 2px solid #00C8FF;
+  padding: 10px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-l { font-family: 'Courier New', monospace; font-size: 8px; color: #5A7A9A; letter-spacing: 1px; line-height: 1.6; }
+.footer-c { font-family: Impact, sans-serif; font-size: 11px; color: #5A7A9A; letter-spacing: 1px; text-align: center; }
+.footer-r { font-family: 'Courier New', monospace; font-size: 8px; color: #5A7A9A; letter-spacing: 1px; text-align: right; line-height: 1.6; }
+
+/* ===== STUDENTS BAR ===== */
+.students-bar {
+  background-color: #020c1a;
+  border-top: 2px solid #FF3A5C;
+  padding: 9px 36px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stu-label { font-family: 'Courier New', monospace; font-size: 8px; color: #FF3A5C; letter-spacing: 2px; white-space: nowrap; padding-right: 14px; border-right: 1px solid rgba(255,58,92,0.3); }
+.stu-list { display: flex; flex-wrap: wrap; gap: 14px; flex: 1; }
+.stu-item { display: flex; align-items: center; gap: 5px; }
+.stu-id { font-family: 'Courier New', monospace; font-size: 8px; color: #00C8FF; background-color: rgba(0,200,255,0.08); padding: 1px 5px; border-radius: 2px; border: 1px solid rgba(0,200,255,0.25); }
+.stu-name { font-size: 8.5px; color: #ACC5DC; }
+</style>
+</head>
+<body>
+
+<!-- CIRCUIT BACKGROUND -->
+<div class="circuit-bg">
+<svg viewBox="0 0 794 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circuit grid lines -->
+  <g stroke="#00C8FF" stroke-width="0.7" fill="none">
+    <!-- Horizontal lines -->
+    <line x1="0" y1="80" x2="794" y2="80"/>
+    <line x1="0" y1="180" x2="794" y2="180"/>
+    <line x1="0" y1="320" x2="794" y2="320"/>
+    <line x1="0" y1="480" x2="794" y2="480"/>
+    <line x1="0" y1="600" x2="794" y2="600"/>
+    <line x1="0" y1="750" x2="794" y2="750"/>
+    <line x1="0" y1="900" x2="794" y2="900"/>
+    <line x1="0" y1="1050" x2="794" y2="1050"/>
+    <!-- Vertical lines -->
+    <line x1="100" y1="0" x2="100" y2="1200"/>
+    <line x1="240" y1="0" x2="240" y2="1200"/>
+    <line x1="400" y1="0" x2="400" y2="1200"/>
+    <line x1="560" y1="0" x2="560" y2="1200"/>
+    <line x1="694" y1="0" x2="694" y2="1200"/>
+    <!-- Diagonal traces -->
+    <polyline points="0,200 60,200 100,240 160,240 200,280"/>
+    <polyline points="240,80 300,80 340,120 400,120 460,180"/>
+    <polyline points="560,320 620,320 660,280 720,280 794,280"/>
+    <polyline points="100,480 150,480 200,520 260,520"/>
+    <polyline points="400,600 460,600 500,640 560,640 620,600"/>
+    <polyline points="0,750 80,750 120,710 180,710 240,750"/>
+    <polyline points="400,900 440,900 480,860 560,860 600,900 694,900"/>
+    <polyline points="100,1050 180,1050 220,1010 300,1010"/>
+    <!-- Extra traces -->
+    <polyline points="560,180 600,180 640,220 694,220 794,220"/>
+    <polyline points="0,320 40,320 80,360 100,360"/>
+    <polyline points="240,480 280,480 320,520 400,520"/>
+    <polyline points="694,600 720,600 750,640 794,640"/>
+  </g>
+  <!-- Circuit nodes (dots) -->
+  <g fill="#00C8FF">
+    <circle cx="100" cy="80" r="3"/>
+    <circle cx="240" cy="80" r="3"/>
+    <circle cx="400" cy="80" r="3"/>
+    <circle cx="560" cy="80" r="3"/>
+    <circle cx="694" cy="80" r="3"/>
+    <circle cx="100" cy="180" r="3"/>
+    <circle cx="240" cy="180" r="3"/>
+    <circle cx="400" cy="320" r="3"/>
+    <circle cx="560" cy="320" r="3"/>
+    <circle cx="100" cy="480" r="3"/>
+    <circle cx="240" cy="480" r="3"/>
+    <circle cx="400" cy="480" r="3"/>
+    <circle cx="560" cy="600" r="3"/>
+    <circle cx="694" cy="600" r="3"/>
+    <circle cx="100" cy="750" r="3"/>
+    <circle cx="240" cy="750" r="3"/>
+    <circle cx="400" cy="900" r="3"/>
+    <circle cx="560" cy="900" r="3"/>
+    <circle cx="694" cy="900" r="3"/>
+    <circle cx="100" cy="1050" r="3"/>
+    <circle cx="240" cy="1050" r="3"/>
+    <!-- Square pads -->
+    <rect x="395" y="595" width="10" height="10" fill="none" stroke="#00C8FF" stroke-width="1"/>
+    <rect x="555" y="315" width="10" height="10" fill="none" stroke="#00C8FF" stroke-width="1"/>
+    <rect x="95" y="475" width="10" height="10" fill="none" stroke="#00C8FF" stroke-width="1"/>
+    <rect x="689" y="895" width="10" height="10" fill="none" stroke="#00C8FF" stroke-width="1"/>
+  </g>
+  <!-- Binary text scattered -->
+  <g font-family="Courier New" font-size="8" fill="#00C8FF" opacity="0.5">
+    <text x="10" y="60">01001000 01100001 01100011 01101011</text>
+    <text x="500" y="160">10110100 11001010</text>
+    <text x="30" y="440">11010011 00101101</text>
+    <text x="620" y="500">01110101 10011001</text>
+    <text x="10" y="860">10101010 11110000 00001111</text>
+    <text x="450" y="980">01100110 11001100</text>
+    <text x="10" y="1020">00110011 10100101</text>
+    <text x="580" y="1080">11001011 01010101</text>
+  </g>
+  <!-- CMD-like text -->
+  <g font-family="Courier New" font-size="7.5" fill="#00FF9F" opacity="0.35">
+    <text x="10" y="140">C:\&gt; nmap -sV 192.168.1.0/24</text>
+    <text x="10" y="270">C:\&gt; netstat -an | grep LISTEN</text>
+    <text x="10" y="560">C:\&gt; ping -t 10.0.0.1 --flood</text>
+    <text x="10" y="690">root@kali:~# sqlmap -u target.com</text>
+    <text x="10" y="830">C:\&gt; wireshark -i eth0 -w capture</text>
+    <text x="10" y="970">root@kali:~# metasploit exploit/</text>
+    <text x="10" y="1110">C:\&gt; hashcat -m 0 hash.txt dict</text>
+  </g>
+  <!-- Hex values -->
+  <g font-family="Courier New" font-size="7" fill="#A855F7" opacity="0.3">
+    <text x="420" y="260">0x4A2F 0xC3B1 0x9E7D</text>
+    <text x="300" y="420">0xFF00 0x00FF 0xABCD</text>
+    <text x="500" y="820">0x1337 0xDEAD 0xBEEF</text>
+    <text x="200" y="1090">0x4865 0x6C6C 0x6F21</text>
+  </g>
+</svg>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-tag">// CIBERSEGURIDAD · EQUIPO 5</div>
+    <h1>ATAQUES,<br><span>CONCEPTOS</span> Y TÉCNICAS</h1>
+    <div class="header-sub">MÓDULO 02 · ACTIVIDAD 10 · GRUPO T46B · 03-06-2025</div>
+    <div class="header-right">
+      <span class="header-shield">🛡️</span>
+      <span class="header-badge-txt">MÓDULO 02</span>
+    </div>
+  </div>
+
+  <!-- ALERT BAR -->
+  <div class="alert-bar">
+    <span>⚡</span>
+    <span>Las amenazas cibernéticas evolucionan constantemente — el conocimiento es la primera línea de defensa</span>
+    <span class="alert-mono">// THREAT_LEVEL: CRITICAL</span>
+  </div>
+
+  <!-- BINARY STRIP -->
+  <div class="bin-strip">01000011 01001001 01010011 01000011 01001111 &nbsp;&nbsp; 10110100 11001010 00110011 &nbsp;&nbsp; 01001000 01000001 01000011 01001011 00101101 01010011 01000101 01000011 &nbsp;&nbsp; 0xFF00 0xDEAD 0xBEEF &nbsp;&nbsp; nmap -sV 192.168.1.0/24 &nbsp;&nbsp; 10101010 11110000</div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- DEFINITION -->
+    <div class="def-box">
+      <div class="def-label">// CONCEPTO CLAVE — MÓDULO 2</div>
+      <div class="def-title">¿Qué es un Ciberataque?</div>
+      <div class="def-text">Un <strong style="color:#E8F4FF">ciberataque</strong> es cualquier intento deliberado de acceder, dañar, robar o destruir información de sistemas o redes sin autorización. Los atacantes pueden ser individuos, grupos organizados o incluso Estados. Comprender sus técnicas y motivaciones es esencial para construir defensas efectivas. Los ataques modernos combinan múltiples vectores y explotan tanto vulnerabilidades técnicas como el factor humano.</div>
+    </div>
+
+    <!-- ATTACK TYPES -->
+    <div class="sec-title" style="color:#FF3A5C">🔴 Principales Tipos de Ataque</div>
+    <div class="attacks-grid">
+      <div class="atk-card c1">
+        <div class="atk-icon">🦠</div>
+        <div class="atk-title">MALWARE</div>
+        <div class="atk-desc">Software malicioso diseñado para infiltrar y dañar sistemas. Incluye virus, gusanos, troyanos, ransomware y spyware.</div>
+      </div>
+      <div class="atk-card c2">
+        <div class="atk-icon">🎣</div>
+        <div class="atk-title">PHISHING</div>
+        <div class="atk-desc">Correos o sitios falsos que simulan entidades legítimas para robar credenciales, datos bancarios o instalar malware.</div>
+      </div>
+      <div class="atk-card c3">
+        <div class="atk-icon">💥</div>
+        <div class="atk-title">DoS / DDoS</div>
+        <div class="atk-desc">Saturan servidores con tráfico masivo hasta hacerlos inoperables para usuarios legítimos. Muy usados por hacktivistas.</div>
+      </div>
+      <div class="atk-card c4">
+        <div class="atk-icon">🕵️</div>
+        <div class="atk-title">SNIFFING / MitM</div>
+        <div class="atk-desc">Interceptación de comunicaciones. El atacante puede espiar o modificar datos sin que las víctimas lo detecten.</div>
+      </div>
+      <div class="atk-card c5">
+        <div class="atk-icon">💉</div>
+        <div class="atk-title">INYECCIÓN SQL</div>
+        <div class="atk-desc">Código malicioso en formularios web para manipular bases de datos, robar registros o comprometer la integridad.</div>
+      </div>
+      <div class="atk-card c6">
+        <div class="atk-icon">🔐</div>
+        <div class="atk-title">RANSOMWARE</div>
+        <div class="atk-desc">Cifra los archivos de la víctima y exige pago para restaurar el acceso. Causa pérdidas millonarias globalmente.</div>
+      </div>
+    </div>
+
+    <!-- KILL CHAIN -->
+    <div class="kc-wrap">
+      <div class="sec-title" style="color:#FFD60A">⚡ Cadena de Ataque — Cyber Kill Chain</div>
+      <div class="kc-flow">
+        <div class="kc-step"><span class="kc-num">01</span><span class="kc-icon">🔍</span><span class="kc-name">Reconocimiento</span><span class="kc-desc">Investigar objetivo</span></div>
+        <div class="kc-step"><span class="kc-num">02</span><span class="kc-icon">⚙️</span><span class="kc-name">Armado</span><span class="kc-desc">Crear exploit</span></div>
+        <div class="kc-step"><span class="kc-num">03</span><span class="kc-icon">📧</span><span class="kc-name">Entrega</span><span class="kc-desc">Email / web / USB</span></div>
+        <div class="kc-step"><span class="kc-num">04</span><span class="kc-icon">💣</span><span class="kc-name">Explotación</span><span class="kc-desc">Ejecutar código</span></div>
+        <div class="kc-step"><span class="kc-num">05</span><span class="kc-icon">🔧</span><span class="kc-name">Instalación</span><span class="kc-desc">Persistencia</span></div>
+        <div class="kc-step"><span class="kc-num">06</span><span class="kc-icon">📡</span><span class="kc-name">C&amp;C</span><span class="kc-desc">Control remoto</span></div>
+        <div class="kc-step"><span class="kc-num">07</span><span class="kc-icon">🎯</span><span class="kc-name">Objetivo</span><span class="kc-desc">Robo / daño</span></div>
+      </div>
+    </div>
+
+    <!-- TWO COLUMNS -->
+    <div class="two-col">
+      <!-- MALWARE TABLE -->
+      <div>
+        <div class="sec-title" style="color:#FF3A5C">🦠 Tipos de Malware</div>
+        <div class="mal-table">
+          <div class="mal-head"><span class="mal-h">Amenaza</span><span class="mal-h">Descripción</span></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#FF3A5C"></div>Virus</div><div class="mal-desc">Se adjunta a archivos legítimos y se replica al ejecutarlos, corrompiendo datos del sistema.</div></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#F4A261"></div>Gusano</div><div class="mal-desc">Se autopropaga por redes sin intervención humana, consumiendo ancho de banda.</div></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#FFD60A"></div>Troyano</div><div class="mal-desc">Aparenta ser software legítimo pero abre puertas traseras al sistema comprometido.</div></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#A855F7"></div>Ransomware</div><div class="mal-desc">Cifra archivos y solicita rescate; generalmente en criptomonedas anónimas.</div></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#00C8FF"></div>Spyware</div><div class="mal-desc">Recopila contraseñas y hábitos de uso enviándolos silenciosamente al atacante.</div></div>
+          <div class="mal-row"><div class="mal-name"><div class="mal-dot" style="background:#00FF9F"></div>Rootkit</div><div class="mal-desc">Oculta la presencia de malware con privilegios de administrador del sistema operativo.</div></div>
+        </div>
+      </div>
+      <!-- SOCIAL ENGINEERING -->
+      <div>
+        <div class="sec-title" style="color:#F4A261">🎭 Ingeniería Social</div>
+        <div class="se-grid">
+          <div class="se-item"><div class="se-title">🎣 Phishing</div><div class="se-desc">Correos masivos que simulan bancos o servicios para robar credenciales de acceso.</div></div>
+          <div class="se-item"><div class="se-title">🎯 Spear Phishing</div><div class="se-desc">Ataque dirigido y personalizado a una víctima específica. Muy difícil de detectar.</div></div>
+          <div class="se-item"><div class="se-title">📞 Vishing</div><div class="se-desc">Engaño por llamada suplantando soporte técnico, bancos u organismos oficiales.</div></div>
+          <div class="se-item"><div class="se-title">💾 Baiting</div><div class="se-desc">Se deja un USB infectado para que la víctima lo conecte por curiosidad.</div></div>
+          <div class="se-item"><div class="se-title">🤝 Pretexting</div><div class="se-desc">Historia falsa para ganarse la confianza y obtener información sensible.</div></div>
+          <div class="se-item"><div class="se-title">🚪 Tailgating</div><div class="se-desc">Acceso físico no autorizado siguiendo a una persona autorizada a zonas restringidas.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHISHING ANATOMY -->
+    <div class="sec-title" style="color:#00C8FF">📧 Anatomía de un Correo de Phishing</div>
+    <div class="phish-wrap">
+      <div class="phish-titlebar">
+        <div class="ph-dot" style="background:#FF3A5C"></div>
+        <div class="ph-dot" style="background:#FFD60A"></div>
+        <div class="ph-dot" style="background:#00FF9F"></div>
+        <span style="margin-left:8px">EJEMPLO DE PHISHING — SOLO EDUCATIVO // CISCO NETWORKING ACADEMY</span>
+      </div>
+      <div class="phish-body">
+        <div class="ph-field"><span class="ph-lbl">De:</span><span class="ph-val bad">soporte@bancoseguro-noreply.xyz ⚠ Dominio sospechoso</span></div>
+        <div class="ph-field"><span class="ph-lbl">Asunto:</span><span class="ph-val bad">🚨 URGENTE: Su cuenta será BLOQUEADA en 24 horas</span></div>
+        <div class="ph-field"><span class="ph-lbl">Para:</span><span class="ph-val">usuario@empresa.com</span></div>
+        <div class="ph-div"></div>
+        <div class="ph-text">Estimado cliente, hemos detectado actividad sospechosa en su cuenta. Para evitar el bloqueo permanente, debe verificar su identidad de forma inmediata haciendo clic en el siguiente enlace:</div>
+        <span class="ph-link">http://banco-seguro-verificacion.tk/login?token=a7f3k2 ← URL maliciosa</span>
+        <div class="ph-btn">VERIFICAR AHORA →</div>
+      </div>
+      <div class="phish-warns">
+        <div class="warn-item">Dominio del remitente no coincide con el banco real (bancoseguro-noreply.xyz ≠ banco.com)</div>
+        <div class="warn-item">Lenguaje de urgencia extrema para presionar al usuario a actuar sin reflexionar</div>
+        <div class="warn-item">URL con dominio de terceros que no pertenece a la entidad legítima (.tk = sospechoso)</div>
+        <div class="warn-item">Solicita clic en enlace externo en vez de acceder directamente al sitio oficial del banco</div>
+      </div>
+    </div>
+
+    <!-- RISK LEVELS -->
+    <div class="sec-title" style="color:#FFD60A">📊 Nivel de Impacto por Tipo de Ataque</div>
+    <div class="risk-wrap">
+      <div class="risk-row">
+        <span class="risk-lbl">Ransomware</span>
+        <div class="risk-bg"><div class="risk-fill" style="width:95%;background-color:#FF3A5C"></div></div>
+        <span class="risk-pct" style="color:#FF3A5C">95%</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-lbl">Ing. Social</span>
+        <div class="risk-bg"><div class="risk-fill" style="width:90%;background-color:#FFD60A"></div></div>
+        <span class="risk-pct" style="color:#FFD60A">90%</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-lbl">Phishing</span>
+        <div class="risk-bg"><div class="risk-fill" style="width:88%;background-color:#F4A261"></div></div>
+        <span class="risk-pct" style="color:#F4A261">88%</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-lbl">DDoS</span>
+        <div class="risk-bg"><div class="risk-fill" style="width:80%;background-color:#00C8FF"></div></div>
+        <span class="risk-pct" style="color:#00C8FF">80%</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-lbl">Inyección SQL</span>
+        <div class="risk-bg"><div class="risk-fill" style="width:75%;background-color:#A855F7"></div></div>
+        <span class="risk-pct" style="color:#A855F7">75%</span>
+      </div>
+    </div>
+
+    <!-- MITIGATION -->
+    <div class="sec-title" style="color:#00FF9F">✅ Estrategias de Mitigación</div>
+    <div class="mit-grid">
+      <div class="mit-card">
+        <div class="mit-icon">🔄</div>
+        <div class="mit-title">Actualizaciones</div>
+        <div class="mit-desc">Mantener sistemas actualizados. Los parches corrigen vulnerabilidades conocidas explotadas en ataques.</div>
+      </div>
+      <div class="mit-card">
+        <div class="mit-icon">🔑</div>
+        <div class="mit-title">MFA</div>
+        <div class="mit-desc">Múltiple factor de autenticación reduce en 99% el acceso no autorizado por credenciales robadas.</div>
+      </div>
+      <div class="mit-card">
+        <div class="mit-icon">🎓</div>
+        <div class="mit-title">Concientización</div>
+        <div class="mit-desc">Capacitar al personal para identificar phishing, ingeniería social y prácticas de uso seguro.</div>
+      </div>
+      <div class="mit-card">
+        <div class="mit-icon">💾</div>
+        <div class="mit-title">Respaldos 3-2-1</div>
+        <div class="mit-desc">3 copias, 2 medios distintos, 1 fuera del sitio. Esencial para recuperarse del ransomware.</div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- REFERENCES -->
+  <div class="references-section">
+    <div class="ref-title">📚 Referencias — APA 7</div>
+    <div class="ref-list">
+      <div class="ref-item">Cisco Networking Academy. (2023). <em>Introducción a la ciberseguridad: Módulo 2 — Ataques, conceptos y técnicas.</em> Cisco Systems. https://www.netacad.com</div>
+      <div class="ref-item">Stallings, W., &amp; Brown, L. (2018). <em>Computer security: Principles and practice</em> (4.ª ed.). Pearson Education.</div>
+      <div class="ref-item">Lockheed Martin. (2022). <em>The cyber kill chain framework.</em> https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html</div>
+      <div class="ref-item">MITRE Corporation. (2023). <em>ATT&amp;CK matrix for enterprise.</em> https://attack.mitre.org</div>
+      <div class="ref-item">CISA. (2023). <em>Understanding ransomware threat actors.</em> Cybersecurity and Infrastructure Security Agency. https://www.cisa.gov/ransomware</div>
+    </div>
+  </div>
+
+  <!-- BINARY STRIP BOTTOM -->
+  <div class="bin-strip">root@kali:~# &nbsp; 11001011 01010101 00110011 &nbsp;&nbsp; C:\&gt; netstat -an &nbsp;&nbsp; 0xDEAD 0xBEEF &nbsp;&nbsp; 10101010 11110000 00001111 &nbsp;&nbsp; sqlmap --dbs &nbsp;&nbsp; 01101000 01100001 01100011 01101011</div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-l">CIBERSEGURIDAD · EQUIPO 5<br>03-06-2025</div>
+    <div class="footer-c">MÓDULO 2 — ATAQUES, CONCEPTOS Y TÉCNICAS</div>
+    <div class="footer-r">ACTIVIDAD 10 · GRUPO T46B<br>Docente: Servando López Contreras</div>
+  </div>
+
+  <!-- STUDENTS BAR -->
+  <div class="students-bar">
+    <div class="stu-label">EQUIPO 5</div>
+    <div class="stu-list">
+      <div class="stu-item"><span class="stu-id">181700</span><span class="stu-name">Edwin Admael Castillo Gómez</span></div>
+      <div class="stu-item"><span class="stu-id">182033</span><span class="stu-name">Carlos René Castillo Olvera</span></div>
+      <div class="stu-item"><span class="stu-id">182217</span><span class="stu-name">Diego Osvaldo Hernández Fernández</span></div>
+      <div class="stu-item"><span class="stu-id">174702</span><span class="stu-name">Magdalena Yesenia Tristan Rivera</span></div>
+    </div>
+  </div>
+
+</div><!-- end page -->
+</body>
+</html>
