@@ -27,8 +27,11 @@
   --purple:#A855F7;
 }
 
-body {
+html, body {
   width: 794px;
+  max-width: 794px;
+  overflow-x: hidden;
+  margin: 0 auto;
   background-color: #030B1A;
   font-family: Arial, Helvetica, sans-serif;
   color: #E8F4FF;
@@ -37,7 +40,7 @@ body {
 
 /* ===== CIRCUIT BACKGROUND CANVAS ===== */
 .circuit-bg {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
   width: 794px; height: 100%;
   z-index: 0;
